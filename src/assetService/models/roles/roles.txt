@@ -1,0 +1,5 @@
+Insert data in roles
+roleName:
+USER
+ADMIN
+ADVISOR

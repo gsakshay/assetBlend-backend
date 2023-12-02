@@ -12,10 +12,13 @@ const app = require("./src/app")
 // TODO
 
 // Setting up environment variables
-const PORT = process.env.PORT
-const MONGO_URL = process.env.MONGO_URL
+const constants = require('./src/utils/constants/index')
+// const PORT = process.env.PORT
+// const MONGO_URL = process.env.MONGO_URL
 
-console.log(PORT, MONGO_URL)
+
+
+console.log(constants.PORT, constants.MONGO_URL)
 
 // Creating an HTTP server using Express app
 const server = http.createServer(app)
@@ -29,11 +32,11 @@ mongoose.connection.on("error", (err) => console.error(err))
 // Starting the server after database setup
 async function startServer() {
 	// Connecting to MongoDB
-	await mongoose.connect(MONGO_URL)
+	await mongoose.connect(constants.MONGO_URL)
 
 	// TODO - Any business logic - Getting the dependencies ready
 
-	server.listen(PORT, () => console.log(`Server is listening on ${PORT}`))
+	server.listen(constants.PORT, () => console.log(`Server is listening on ${constants.PORT}`))
 }
 
 // Calling the startServer function to begin the server setup
