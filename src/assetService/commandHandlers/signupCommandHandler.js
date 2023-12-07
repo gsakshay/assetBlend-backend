@@ -7,10 +7,9 @@ const CreateUserCommand = require('../commands/createUserCommand');
 const CreateUserHandler = require('./createUserHandler');
 
 class SignupCommandHandler {
-    async handle(command, req, res, next) {
+    async handle(command) {
         try{
             const payload = command.payload;
-
             // get role id
             const fetchRoleQuery = new FetchRoleId(payload.role)
             const fetchRoleIdHandler = new FetchRoleIdHandler();
@@ -28,26 +27,24 @@ class SignupCommandHandler {
             payload.password = hashedPassword
             
             //create user
+            let user = undefined
             try{
                 const createUserCommand = new CreateUserCommand(payload)
                 const createUserHandler = new CreateUserHandler();
-                const user = await createUserHandler.handle(createUserCommand)
+                user = await createUserHandler.handle(createUserCommand)
             }catch(error){
-                res.clearCookie('jwt', refreshToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 });
-                throw new customError("Internal server error", 500, 'error')
+                throw error
             }
-            
-            //set cookie
-            res.cookie('jwt', refreshToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 })
+
             //return response
-            return {
+            const responseData = {
                 username: user.username,
-                accessToken: accessToken
+                accessToken: accessToken,
+                refreshToken : refreshToken
             }
+            return responseData
         }catch(error){
-            //delete user?
-            res.clearCookie('jwt', refreshToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 });
-            throw new customError("Internal server error", 500, 'error')
+            throw error
         }
             
     }

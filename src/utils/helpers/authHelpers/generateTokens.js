@@ -25,3 +25,16 @@ exports.generateRefreshToken = function(userPayload) {
         }
     );
 }
+
+
+exports.generateResetToken = function(userPayload) {
+    return jwt.sign(
+        {
+            username: userPayload.username
+        },
+        constants.JWT_SECRET,
+        {
+            expiresIn: '24h',
+        }
+    )
+}

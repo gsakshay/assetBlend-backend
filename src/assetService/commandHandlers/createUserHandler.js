@@ -7,7 +7,8 @@ class CreateUserHandler {
       const user = await UserService.createUser(command.userPayload)
       return user;
     } catch (error) {
-        throw new customError('Failed to add user', 400, 'warn');
+        console.log(error)
+        throw error;
     }
   }
 }
