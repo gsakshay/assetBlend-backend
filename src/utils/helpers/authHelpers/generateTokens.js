@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const constants = require('../../constants/index')
+const constants = require('../../constants')
 const customError = require('../../errors/customError')
 
 exports.generateAccessToken = function(userPayload) {

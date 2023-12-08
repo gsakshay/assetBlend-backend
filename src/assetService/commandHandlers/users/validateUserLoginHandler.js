@@ -1,15 +1,15 @@
-const { comparePassword } = require("../../utils/helpers/hash");
-const FetchUserByUsernameQuery = require("../queries/FetchUserByUsernameQuery")
-const FetchUserByUsernameQueryHandler = require("../queryHandlers/fetchUserByUsernameHandler")
+const { comparePassword } = require("../../../utils/helpers/hash");
+const FetchUser = require("../../queries/users/fetchUser")
+const FetchUserHandler = require("../../queryHandlers/users/fetchUserHandler")
 
 class ValidateUserLoginHandler {
     async handle(command){
         try{
             const payload = command.payload
             // query user with username
-            const fetchUserByUsername = new FetchUserByUsernameQuery(payload.username)
-            const fetchUserHandler = new FetchUserByUsernameQueryHandler();
-            const user = await fetchUserHandler.handle(fetchUserByUsername)
+            const fetchUser = new FetchUser({username:payload.username})
+            const fetchUserHandler = new FetchUserHandler();
+            const user = await fetchUserHandler.handle(fetchUser)
             if(!user) return false
 
             // comapre hashed pswd

@@ -8,6 +8,8 @@ const cookieParser = require('cookie-parser')
 const baseApiRouter = require("./assetService/routes/index")
 const customError = require("./utils/errors/customError")
 const {errorHandler} = require('./middlewares/errorHandler')
+const { hashPassword } = require("./utils/helpers/hash")
+
 // Importing defined routes
 // TODO
 
@@ -20,8 +22,10 @@ app.use(morgan("combined")) // Logging HTTP requests
 app.use(express.json()) // Parsing JSON data
 app.use(cookieParser());
 
+
 // API and redirect routes setup
 //app.use("/", (req, res, next) => res.send("Welcome to Financial Portfolio")) // Redirect routes
+
 
 app.use("/api", baseApiRouter)
 

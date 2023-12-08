@@ -14,7 +14,9 @@ console.log("Loading constants...")
 const constants = {
     PORT: process.env.PORT,
     MONGO_URL: process.env.MONGO_URL,
-    JWT_SECRET: process.env.JWT_SECRET
+    JWT_SECRET: process.env.JWT_SECRET,
+    TIINGO_BASE_URL: process.env.TIINGO_BASE_URL,
+    API_TOKEN: process.env.API_TOKEN,
 }
 
 module.exports = constants

@@ -1,4 +1,4 @@
-const UserService = require('../models/users/users.model');
+const UserService = require('../../models/users/users.model');
 
 class UpdateUserHandler {
     async handle(command) {

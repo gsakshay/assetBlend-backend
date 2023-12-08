@@ -1,22 +1,13 @@
 const customError = require('../../utils/errors/customError');
-const FetchRoleId = require('../queries/fetchRoleId');
-const FetchRoleIdHandler = require('../queryHandlers/fetchRoleIdHandler');
 const {getAuthTokens} = require('../../utils/helpers/authHelpers/getTokens')
 const {hashPassword} = require('../../utils/helpers/hash')
-const CreateUserCommand = require('../commands/createUserCommand');
-const CreateUserHandler = require('./createUserHandler');
+const CreateUserCommand = require('../commands/users/createUserCommand');
+const CreateUserHandler = require('./users/createUserHandler');
 
 class SignupCommandHandler {
     async handle(command) {
         try{
             const payload = command.payload;
-            // get role id
-            const fetchRoleQuery = new FetchRoleId(payload.role)
-            const fetchRoleIdHandler = new FetchRoleIdHandler();
-            const role = await fetchRoleIdHandler.handle(fetchRoleQuery);
-
-            // update role to ID
-            payload.role = role
 
             // get authtokens
             const {accessToken, refreshToken} = getAuthTokens(payload)
@@ -29,6 +20,7 @@ class SignupCommandHandler {
             //create user
             let user = undefined
             try{
+                //payload.role = payload.role._id
                 const createUserCommand = new CreateUserCommand(payload)
                 const createUserHandler = new CreateUserHandler();
                 user = await createUserHandler.handle(createUserCommand)

@@ -1,10 +1,11 @@
 const customError = require("../../utils/errors/customError")
-const { verifyRefreshToken } = require("../../utils/helpers/authHelpers/verifyRefreshToken")
-const UpdateUserCommand = require('../commands/updateUserCommand')
-const UpdateUserHandler = require('../commandHandlers/updateUserHandler')
+const { verifyToken } = require("../../utils/helpers/authHelpers/verifyToken")
+const UpdateUserCommand = require('../commands/users/updateUserCommand')
+const UpdateUserHandler = require('./users/updateUserHandler')
 const { hashPassword } = require("../../utils/helpers/hash")
-const FetchUserByUsernameQuery = require("../queries/FetchUserByUsernameQuery")
-const FetchUserByUsernameQueryHandler = require("../queryHandlers/fetchUserByUsernameHandler")
+const FetchUser = require("../queries/users/fetchUser")
+const FetchUserHandler = require("../queryHandlers/users/fetchUserHandler")
+const { validatePassword } = require("../../utils/helpers/validatePassword")
 
 class ResetPasswordHandler {
     async handle(command){
@@ -17,7 +18,7 @@ class ResetPasswordHandler {
                 throw new customError("Missing required parameter. Expected resetToken, username and password", 400, 'warn')
             }
             //decode resetToken
-            const decoded = await verifyRefreshToken(resetToken)
+            const decoded = await verifyToken(resetToken)
             if(decoded === false){
                 throw new customError("Invalid username", 400, 'warn')
             }
@@ -26,12 +27,17 @@ class ResetPasswordHandler {
                 throw new customError("Input data mismatch", 400, 'warn')
             }
 
+            // validate new password 
+            const isValidPassword = validatePassword(password);
+            if(!isValidPassword.valid) {
+                throw new customError(isValidPassword.message, 400, 'warn');
+            }
+
             // if valid get user
             let user = undefined;
-            const fetchByUsernameQuery = new FetchUserByUsernameQuery(decoded);
-            const fetchByUsernameQueryHandler = new FetchUserByUsernameQueryHandler()
-            user = await fetchByUsernameQueryHandler.handle(fetchByUsernameQuery);
-            console.log("In handler",user)
+            const fetchUser = new FetchUser({username:decoded});
+            const fetchUserHandler = new FetchUserHandler()
+            user = await fetchUserHandler.handle(fetchUser);
             if(!user){
                 throw new customError("User not found", 404, 'warn');
             }

@@ -1,9 +1,9 @@
 const customError = require("../../utils/errors/customError");
 const { generateResetToken } = require("../../utils/helpers/authHelpers/generateTokens");
-const UpdateUserCommand = require("../commands/updateUserCommand");
-const FetchUserByUsernameQuery = require("../queries/FetchUserByUsernameQuery");
-const FetchUserByUsernameQueryHandler = require("../queryHandlers/fetchUserByUsernameHandler");
-const UpdateUserHandler = require("./updateUserHandler");
+const UpdateUserCommand = require("../commands/users/updateUserCommand");
+const FetchUser = require("../queries/users/fetchUser");
+const FetchUserHandler = require("../queryHandlers/users/fetchUserHandler");
+const UpdateUserHandler = require("./users/updateUserHandler");
 
 class RequestPasswordResetHandler {
     async handle(command){
@@ -17,10 +17,9 @@ class RequestPasswordResetHandler {
             }
             // get user
             let user = undefined;
-            const fetchByUsernameQuery = new FetchUserByUsernameQuery(username);
-            const fetchByUsernameQueryHandler = new FetchUserByUsernameQueryHandler()
-            user = await fetchByUsernameQueryHandler.handle(fetchByUsernameQuery);
-            console.log(user)
+            const fetchUser = new FetchUser({username: username});
+            const fetchUserHandler = new FetchUserHandler()
+            user = await fetchUserHandler.handle(fetchUser);
             // no user with this username
             if(!user){
                 throw new customError("User not found", 404, 'warn');

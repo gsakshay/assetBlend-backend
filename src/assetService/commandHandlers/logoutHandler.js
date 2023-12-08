@@ -1,8 +1,8 @@
-const { verifyRefreshToken } = require("../../utils/helpers/authHelpers/verifyRefreshToken");
-const FetchUserByUsernameQuery = require("../queries/FetchUserByUsernameQuery");
-const FetchUserByUsernameQueryHandler = require("../queryHandlers/fetchUserByUsernameHandler");
-const UpdateUserCommand = require('../commands/updateUserCommand')
-const UpdateUserHandler = require('../commandHandlers/updateUserHandler')
+const { verifyToken } = require("../../utils/helpers/authHelpers/verifyToken");
+const FetchUser = require("../queries/users/fetchUser");
+const FetchUserHandler = require("../queryHandlers/users/fetchUserHandler");
+const UpdateUserCommand = require('../commands/users/updateUserCommand')
+const UpdateUserHandler = require('./users/updateUserHandler')
 
 class LogoutHandler {
     async handle(command){
@@ -17,16 +17,15 @@ class LogoutHandler {
 
             const refreshToken = cookie.jwt
             // decode refreshToken 
-            const decoded = await verifyRefreshToken(refreshToken)
+            const decoded = await verifyToken(refreshToken)
             //if invalid token or expired (consider logged out) 
             if (!decoded) {
                 return { status: 200 }
             }
             // get user
-            const fetchByUsernameQuery = new FetchUserByUsernameQuery(decoded)
-            const fetchByUsernameQueryHandler = new FetchUserByUsernameQueryHandler()
-            const user = await fetchByUsernameQueryHandler.handle(fetchByUsernameQuery)
-            console.log(user)
+            const fetchUser = new FetchUser({username:decoded})
+            const fetchUserHandler = new FetchUserHandler()
+            const user = await fetchUserHandler.handle(fetchUser)
             // remove refreshToken & update user
             if (user) {
                 user.refreshToken = ""

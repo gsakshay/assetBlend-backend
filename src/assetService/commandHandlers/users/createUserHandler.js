@@ -1,5 +1,5 @@
-const customError = require('../../utils/errors/customError')
-const UserService = require('../models/users/users.model');
+const customError = require('../../../utils/errors/customError')
+const UserService = require('../../models/users/users.model');
 
 class CreateUserHandler {
   async handle(command) {

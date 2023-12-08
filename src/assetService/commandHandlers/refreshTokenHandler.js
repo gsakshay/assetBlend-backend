@@ -1,9 +1,9 @@
 const customError = require('../../utils/errors/customError')
-const {verifyRefreshToken} = require('../../utils/helpers/authHelpers/verifyRefreshToken')
-const FetchUserByUsernameQuery = require('../queries/FetchUserByUsernameQuery')
-const FetchUserByUsernameQueryHandler = require('../queryHandlers/fetchUserByUsernameHandler')
-const UpdateUserCommand = require('../commands/updateUserCommand')
-const UpdateUserHandler = require('../commandHandlers/updateUserHandler')
+const {verifyToken} = require('../../utils/helpers/authHelpers/verifyToken')
+const FetchUser = require('../queries/users/fetchUser')
+const FetchUserHandler = require('../queryHandlers/users/fetchUserHandler')
+const UpdateUserCommand = require('../commands/users/updateUserCommand')
+const UpdateUserHandler = require('./users/updateUserHandler')
 const { getAuthTokens } = require('../../utils/helpers/authHelpers/getTokens')
 
 class RefreshTokenHandler{
@@ -16,15 +16,15 @@ class RefreshTokenHandler{
             const oldRefreshToken = cookies.jwt
 
             // verify token and decode
-            const decoded = await verifyRefreshToken(oldRefreshToken)
+            const decoded = await verifyToken(oldRefreshToken)
             if(decoded === false){
                 throw new customError("Invalid Token", 401, 'warn')
             }
             // match token with user
             let user = undefined;
-            const fetchByUsernameQuery = new FetchUserByUsernameQuery(decoded);
-            const fetchByUsernameQueryHandler = new FetchUserByUsernameQueryHandler()
-            user = await fetchByUsernameQueryHandler.handle(fetchByUsernameQuery);
+            const fetchUser = new FetchUser({username:decoded});
+            const fetchUserHandler = new FetchUserHandler()
+            user = await fetchUserHandler.handle(fetchUser);
 
             if(!user){
                 throw new customError("User not found", 404, 'warn');

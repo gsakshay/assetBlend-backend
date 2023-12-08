@@ -4,7 +4,6 @@ const customError = require('../../utils/errors/customError')
 const SignupCommand = require('../commands/signupCommand')
 const SignupCommandHandler = require('../commandHandlers/signupCommandHandler')
 const {validateSignupPayload} = require('../../middlewares/validateSignupPayload')
-const {isAdminRegisterRequest} = require('../../middlewares/isAdminRegister');
 const LoginCommand = require('../commands/loginCommand');
 const LoginHandler = require('../commandHandlers/loginHandler');
 const RefreshToken = require('../commands/refreshToken');
@@ -15,15 +14,16 @@ const RequestPasswordReset = require('../commands/requestPasswordReset');
 const RequestPasswordResetHandler = require('../commandHandlers/requestPasswordResetHandler');
 const ResetPassword = require('../commands/resetPassword');
 const ResetPasswordHandler = require('../commandHandlers/resetPasswordHandler');
+const { isNotAdminUser } = require('../../middlewares/isNotAdminUser');
+const { hashPassword } = require('../../utils/helpers/hash');
 
 
-router.post('/register', validateSignupPayload, isAdminRegisterRequest, async (req,res,next)=>{
+router.post('/register', validateSignupPayload, isNotAdminUser, async (req,res,next)=>{
     try{
         const signupCommand = new SignupCommand(req.body);
         const signupCommandHandler = new SignupCommandHandler();
         let responseJson = undefined
         responseJson = await signupCommandHandler.handle(signupCommand)
-        console.log("routes",responseJson)
         res.cookie('jwt', responseJson.refreshToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 })
         res.status(200).json({username: responseJson.username, accessToken: responseJson.accessToken})
     }catch(error){
@@ -60,7 +60,6 @@ router.post('/refreshToken', async(req, res, next)=> {
         const refreshTokenCommand = new RefreshToken(req.cookies)
         const refreshHandler = new RefreshTokenHandler()
         const responseJson = await refreshHandler.handle(refreshTokenCommand)
-        console.log(responseJson.refreshToken)
         res.cookie('jwt', responseJson.refreshToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 })
         res.status(200).json({username: responseJson.username, accessToken: responseJson.accessToken})
     }catch(error){
@@ -76,7 +75,7 @@ router.post('/refreshToken', async(req, res, next)=> {
 
 router.post('/logout', async (req, res, next) => {
     try{
-        console.log(req.cookies)
+
         const logoutCommand = new Logout(req.cookies)
         const logoutHandler = new LogoutHandler()
         const responseJson = await logoutHandler.handle(logoutCommand)
@@ -110,7 +109,6 @@ router.post('/forgotPassword', async (req,res,next) => {
 
 router.post('/resetPassword', async (req,res,next) => {
     try{
-        //console.log(req.body)
         const data = req.body
         const resetPassword = new ResetPassword(data.resetToken, data.username, data.password)
         const resetPasswordHandler = new ResetPasswordHandler()

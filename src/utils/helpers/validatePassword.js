@@ -19,7 +19,7 @@ exports.validatePassword = function(inputPassword) {
     if (validationResult.length === 0) {
         return { valid: true };
       } else {
-        const errorMessage = `Password does not meet the requirements. It should have atleast one ${validationResult.join(', ')}`;
+        const errorMessage = `Password does not meet the requirements. It should have minimum length of 8 and atleast one ${validationResult.join(', ')}`;
         return { valid: false, message: errorMessage };
       }
 } 

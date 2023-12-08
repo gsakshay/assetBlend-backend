@@ -1,14 +1,13 @@
 const customError = require('../../utils/errors/customError')
-const ValidateUserLogin = require('../commands/validateUserLogin')
-const ValidateUserLoginHandler = require('../commandHandlers/validateUserLoginHandler')
+const ValidateUserLogin = require('../commands/users/validateUserLogin')
+const ValidateUserLoginHandler = require('./users/validateUserLoginHandler')
 const { getAuthTokens } = require('../../utils/helpers/authHelpers/getTokens')
-const UpdateUserCommand = require('../commands/updateUserCommand')
-const UpdateUserHandler = require('../commandHandlers/updateUserHandler')
+const UpdateUserCommand = require('../commands/users/updateUserCommand')
+const UpdateUserHandler = require('./users/updateUserHandler')
 
 class LoginCommandHandler {
     async handle(command){
         try{
-            console.log("Inside handler")
             const payload = command.payload
 
             // check if all fields are available - username and pswd

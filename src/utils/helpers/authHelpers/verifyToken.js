@@ -1,11 +1,11 @@
-const constants = require('../../constants/index')
+const constants = require('../../constants')
 const jwt = require("jsonwebtoken")
 
-exports.verifyRefreshToken = async function(refreshToken){
+exports.verifyToken = async function(token){
     try{
         const decoded_data =  await new Promise((resolve, reject) => {
             jwt.verify(
-                refreshToken, constants.JWT_SECRET,
+                token, constants.JWT_SECRET,
                 async (err, decoded) => {
                     if(err){
                         resolve(false);
@@ -19,7 +19,6 @@ exports.verifyRefreshToken = async function(refreshToken){
                 }
             );
         });
-        console.log(decoded_data)
         return decoded_data
     }catch(error){
         if (error.name === 'TokenExpiredError') {
