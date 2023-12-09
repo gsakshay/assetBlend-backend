@@ -28,7 +28,6 @@ loadAssets = async function() {
           }));
 
         // load to DB
-
         const loadStocksCommand= new LoadStocksCommand(stock_filtered_columns)
         const loadStockshandler = new LoadStocksHandler()
         await loadStockshandler.handle(loadStocksCommand)

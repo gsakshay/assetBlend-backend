@@ -55,8 +55,27 @@ async function createUser(userPayload) {
 // update user
 async function updateUser(user) {
     try{
-        await Users.findOneAndUpdate({username:user.username}, user)
+        console.log("In DB", user)
+        console.log("In DB check value", user.totalInvestedAmount)
+
+        // update similar if needed in other updates
+        //const updateduser = await Users.findOneAndUpdate({username:user.username}, { $set: { totalInvestedAmount: user.totalInvestedAmount } }, { new: true })
+        const nonUpdateableFields = ['createdAt', 'updatedAt', '__v', '_id'];
+
+        // Remove non-updateable fields if they are present
+        const updatedUserObject = {};
+
+        Object.keys(user).forEach(key => {
+        if (!nonUpdateableFields.includes(key)) {
+            updatedUserObject[key] = user[key];
+        }
+        });
+
+        console.log("User removed fields", user)
+        const updateduser = await Users.findOneAndUpdate({username:user.username}, {$set : updatedUserObject}, { new: true })
+        console.log("In DB after udpated",updateduser)
     }catch(error){
+        console.log(error)
         throw new customError("Internal server error", 500, 'error')
     }
 }
@@ -65,6 +84,7 @@ module.exports = {
     createUser, 
     updateUser,
     getUsers,
-    getUser };
+    getUser 
+};
 
 

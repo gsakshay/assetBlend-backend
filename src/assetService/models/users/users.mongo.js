@@ -47,6 +47,10 @@ const Users = new mongoose.Schema(
 			type: Boolean,
 			default: false,
 		},
+		totalInvestedAmount: {
+			type : Number,
+			default: 0
+		},
 		resetToken: {
 			type: String,
 			default: "",
@@ -60,5 +64,13 @@ const Users = new mongoose.Schema(
 		timestamps: true,
 	}
 )
+
+
+Users.pre('save', function (next) {
+	if (this.totalInvestedAmount < 0) {
+	  this.totalInvestedAmount = 0;
+	}
+	// next();
+  });
 
 module.exports = mongoose.model("Users", Users)

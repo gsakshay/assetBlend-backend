@@ -7,7 +7,6 @@ class CreateUserHandler {
       const user = await UserService.createUser(command.userPayload)
       return user;
     } catch (error) {
-        console.log(error)
         throw error;
     }
   }

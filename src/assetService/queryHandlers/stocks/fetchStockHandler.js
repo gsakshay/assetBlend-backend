@@ -7,7 +7,7 @@ class FetchStockHandler {
       const stock = await StockServices.getStock(query.criteria)
       return stock;
     } catch (error) {
-        throw new customError(`No stock found with criteria ${query.criteria}`, 400, 'warn');
+        throw new customError(`No stock found with given criteria`, 400, 'warn');
     }
   }
 }
