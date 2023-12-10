@@ -64,11 +64,21 @@ async function updateManyCryptoByTickers(tickers, fieldToUpdate, updateValue){
     }
 }
 
+// get crypto count
+async function getCryptoCount() {
+    try {
+        const count = await cryptoStocks.countDocuments();
+        return count;
+    } catch (error) {
+        throw new customError(`Failed to get the count of crypto: ${error.message}`, 500, 'error')
+    }
+}
 
 module.exports={
     loadCrypto,
     getCrypto,
     getCryptos,
     updateCrypto,
-    updateManyCryptoByTickers
+    updateManyCryptoByTickers,
+    getCryptoCount
 }

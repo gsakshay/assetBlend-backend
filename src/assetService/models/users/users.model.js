@@ -73,11 +73,41 @@ async function updateUser(user) {
     }
 }
 
+// get count of users based on role
+async function getUsersCount(criteria){
+    try {
+        if (!criteria || Object.keys(criteria).length === 0) {
+            throw new customError('Criteria must be provided to fetch count.', 400, 'warn');
+        }else{
+            const count = await Users.countDocuments(criteria);
+            return count;
+        }
+    } catch (error) {
+        throw new customError(`Error fetching count of documents for given criteria: ${error.message}`, 500, 'error');
+    }
+}
+
+// delete user based on _id
+async function deleteUser(criteria){
+    try {
+        if (!criteria || Object.keys(criteria).length === 0) {
+            throw new customError('Criteria must be provided to delete an user.', 400, 'warn');
+        }else{
+            const result = await Users.deleteOne(criteria);
+            return result;
+        }
+    } catch (error) {
+        throw new customError(`Error deleting user for given criteria: ${error.message}`, 500, 'error');
+    }
+}
+
 module.exports = { 
     createUser, 
     updateUser,
     getUsers,
-    getUser 
+    getUser,
+    getUsersCount,
+    deleteUser
 };
 
 

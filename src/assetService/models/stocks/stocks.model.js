@@ -61,12 +61,21 @@ async function updateManyStockByTickers(tickers, fieldToUpdate, updateValue){
     }
 }
 
-
+// get stocks count
+async function getStocksCount() {
+    try {
+        const count = await stocks.countDocuments();
+        return count;
+    } catch (error) {
+        throw new customError(`Failed to get the count of stocks: ${error.message}`, 500, 'error')
+    }
+}
 
 module.exports={
     loadStocks,
     getStocks,
     getStock,
     updateStock,
-    updateManyStockByTickers
+    updateManyStockByTickers,
+    getStocksCount
 }
