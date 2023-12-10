@@ -40,7 +40,7 @@ router.get("/:userId", verifyUser, hasUserRole, async (req, res, next) => {
   }
 });
 
-router.post("/:userId", verifyUser, hasUserRole, async (req, res, next) => {
+router.post("/editDetails", verifyUser, hasUserRole, async (req, res, next) => {
   try {
     const { firstName, lastName, email, phone, address } = req.body;
     const { username } = req.body.user;
