@@ -8,6 +8,7 @@ const adminRouter = require("./adminRoutes");
 const userRouter = require("./userRoutes");
 const accountRouter = require("./accountRoutes");
 const advisorRoutes = require('./advisorRoutes')
+const tickerRoutes = require('./tickerRoutes')
 
 router.use("/auth", authRouter);
 
@@ -24,5 +25,7 @@ router.use("/advisors", advisorRoutes)
 router.use("/user", userRouter);
 
 router.use("/account", accountRouter);
+
+router.use("/ticker", tickerRoutes)
 
 module.exports = router;

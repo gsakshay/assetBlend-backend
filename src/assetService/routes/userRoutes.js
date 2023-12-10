@@ -14,6 +14,8 @@ const AddAdvisorCommand = require('../commands/addAdvisorCommand');
 const AddAdvisorHandler = require('../commandHandlers/AddAdvisorHandler');
 const DeleteAdvisor = require('../commands/deleteAdvisor');
 const DeleteAdvisorHandler = require('../commandHandlers/deleteAdvisorHandler');
+const FetchUserDashboard = require('../queries/fetchUserDashboard');
+const FetchUserDashboardHandler = require('../queryHandlers/fetchUserDashboardHandler');
 
 
 
@@ -50,6 +52,7 @@ async (req,res,next)=>{
         const responseData = await addUserAssetHandler.handle(addUserAsset)
         res.status(200).json(responseData)
     }catch(error){
+        console.log(error)
         if(error.status === 400){
             next(error)
         }else{
@@ -113,6 +116,18 @@ router.post('/removeAdvisor', verifyUser, hasUserRole, async (req,res,next)=> {
     }
 })
 
+
+router.get('/dashboard', verifyUser, hasUserRole, async (req, res, next) => {
+    try{
+        const fetchDashboardData = new FetchUserDashboard(req.body.user)
+        const fetchDashboardHandler = new FetchUserDashboardHandler()
+        const dashboardData = await fetchDashboardHandler.handle(fetchDashboardData)
+        res.status(200).json(dashboardData)
+    }catch(error){  
+        console.log("ROUTE ERROR", error)
+        next(new customError("Failed to fetch dashboard details", 500, 'error'))
+    }
+})
 
 
 module.exports = router

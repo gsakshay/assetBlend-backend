@@ -9,7 +9,7 @@ const UpdateUserHandler = require('../commandHandlers/users/updateUserHandler');
 const customError = require('../../utils/errors/customError');
 const commonUtils = require('../../utils/helpers/commonUtils');
 
-router.get("/", verifyUser, hasUserRole, async (req, res, next) => {
+router.get("/", verifyUser, async (req, res, next) => {
   try {
     const user = req.body.user;
     const userDetails = commonUtils.formatUserDetails(user, "unrestricted");
@@ -19,7 +19,7 @@ router.get("/", verifyUser, hasUserRole, async (req, res, next) => {
   }
 });
 
-router.get("/:userId", verifyUser, hasUserRole, async (req, res, next) => {
+router.get("/:userId", verifyUser, async (req, res, next) => {
   try {
     const { userId } = req.params;
 
