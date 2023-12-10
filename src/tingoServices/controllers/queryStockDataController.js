@@ -13,7 +13,9 @@ getPriceOnDate = async function(requestParams, tickerName){
         }
         return stock_data
     }catch(error){
-        console.log(error)
+        if(error.status === 400){
+            console.log("In 400 ERROR Stock get Price")
+        }
         throw new customError("Failed to fetch price for the given date", 500, 'error')
     }
     
@@ -32,6 +34,7 @@ getDailyMetric = async function(requestParams, tickerName){
         return stockMetric[0]
     }catch(error){
         if(error.status === 400){
+            console.log("In 400 ERROR DailyMetric")
             throw error
         }else{
             console.log("Response",error)

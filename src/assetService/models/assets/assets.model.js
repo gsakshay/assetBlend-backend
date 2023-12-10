@@ -50,6 +50,7 @@ async function getAsset(criteria){
             return asset;
         }
     }catch(error){
+        console.log(error)
         if(error.status===400){
             throw error
         }else{
@@ -62,10 +63,11 @@ async function getAsset(criteria){
 async function getAssets(criteria={}){
     try{
         // populate not added. can be added if needed
-        const assetList = await Assets.find(criteria);
+        const assetList = await Assets.find(criteria).sort({ purchasedDate: 'desc'}).exec();
         return assetList
     } catch (error) {
-    throw new customError(`Error fetching asset: ${error.message}`, 500, 'error');
+        console.log(error)
+        throw new customError(`Error fetching asset: ${error.message}`, 500, 'error');
   }
 }
 

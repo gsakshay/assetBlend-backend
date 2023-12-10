@@ -11,7 +11,13 @@ getPriceOnDate = async function(requestParams){
         }
         return crypto_data
     }catch(error){
-        throw new customError("Failed to fetch price for the given date", 500, 'error')
+        if(error.status === 400){
+            console.log("In 400 ERROR Crypto")
+            throw error
+        }else{
+            throw new customError("Failed to fetch price for the given date", 500, 'error')
+        }   
+        
     }
     
 }

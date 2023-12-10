@@ -28,7 +28,7 @@ class AddCrptoPrepareDataHandler{
             }
             const cryptoData = {
                 "ticker": crypto.ticker,
-                "amount": cryptoPrice.priceData[0].close
+                "amount": cryptoPrice[0].priceData[0].close
             }
 
             return cryptoData
