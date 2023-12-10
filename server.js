@@ -32,17 +32,17 @@ mongoose.connection.once("open", () => {
 	// only in dev?
 	// populate data
 	console.log("Populating intial data...")
-	// loadDataController.loadAssets().then(() => {
-	// 	console.log("loaded stocks");
-	// }).catch((error)=>{
-	// 	console.log(error.message)
-	// });
+	loadDataController.loadAssets().then(() => {
+		console.log("loaded stocks");
+	}).catch((error)=>{
+		console.log(error.message)
+	});
 
-	// loadDataController.loadCrypto().then(() => {
-	// 	console.log("loaded crypto data");
-	// }).catch((error)=>{
-	// 	console.log(error.message)
-	// });
+	loadDataController.loadCrypto().then(() => {
+		console.log("loaded crypto data");
+	}).catch((error)=>{
+		console.log(error.message)
+	});
 })
 mongoose.connection.on("error", (err) => console.error(err))
 
