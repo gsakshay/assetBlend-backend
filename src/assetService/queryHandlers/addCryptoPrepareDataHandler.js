@@ -23,7 +23,9 @@ class AddCrptoPrepareDataHandler{
             }
 
             const cryptoPrice = await CryptoController.getPriceOnDate(request_params)
-
+            if(cryptoPrice.length > 1){
+                throw new customError("Received multiple data", 500, 'error')
+            }
             const cryptoData = {
                 "ticker": crypto.ticker,
                 "amount": cryptoPrice.priceData[0].close

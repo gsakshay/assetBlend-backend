@@ -1,3 +1,4 @@
+const customError = require('../../errors/customError');
 const apiClient = require('../tiingoHelpers/setupApiClient')
 
 module.exports = async function fetchTiingoData(endpoint, parameters={}) {
@@ -12,6 +13,9 @@ module.exports = async function fetchTiingoData(endpoint, parameters={}) {
         const response = await apiClient.get(urlQuery)
         return response.data
     }catch(error){
+        if(error.response.status === 400){
+            throw new customError("No Permission", 400, 'warn')
+        }
         throw error
     }
 }

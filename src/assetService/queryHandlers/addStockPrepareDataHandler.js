@@ -22,6 +22,9 @@ class AddStockPrepareDataHandler{
             }
 
             const stockPrice = await StockController.getPriceOnDate(request_params, stock.ticker)
+            if(stockPrice.length > 1){
+                throw new customError("Received multiple data", 500, 'error')
+            }
             console.log(stockPrice)
             const stockData = {
                 "ticker": stock.ticker,

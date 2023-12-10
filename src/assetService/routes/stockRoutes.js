@@ -8,17 +8,23 @@ const router = express.Router();
 router.get("/", async (req, res, next)=> {
     try{
         // get params and 
-        const queryParams = req.query
-        const criteria = {}
+        const name = req.query.name
 
         // construct criteria
-        for(const param in queryParams){
-            if(param === 'isNews' || param === 'isActive' || param === 'isADR'){
-                criteria[param] = queryParams[param] === 'true'
-            }else{
-                criteria[param] = queryParams[param]
-            }
+        let criteria = {}
+        if(name){
+            const regex = new RegExp(name, 'i');
+            criteria = { name: { $regex: regex } }
         }
+        
+        
+        // for(const param in queryParams){
+        //     if(param === 'isNews' || param === 'isActive' || param === 'isADR'){
+        //         criteria[param] = queryParams[param] === 'true'
+        //     }else{
+        //         criteria[param] = queryParams[param]
+        //     }
+        // }
         const fetchStockList = new FetchStockList(criteria)
         const fetchStockListHandler = new FetchStockListHandler()
         const stockList = await fetchStockListHandler.handle(fetchStockList)
@@ -38,7 +44,7 @@ router.get("/:stockId", async (req,res,next)=> {
             const stockData = await fetchStockHandler.handle(fetchStock)
             res.status(200).json(stockData)
         }catch(err){
-            next(new customError(" Please provide a valid crypto id", 400, 'warn'))
+            next(new customError(" Please provide a valid stock id", 400, 'warn'))
         }
         
     }catch(error){

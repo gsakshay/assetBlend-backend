@@ -9,17 +9,23 @@ const router = express.Router();
 router.get("/", async (req, res, next)=> {
     try{
         // get params and 
-        const queryParams = req.query
-        const criteria = {}
-
+        const name = req.query.name
+        
         // construct criteria
-        for(const param in queryParams){
-            if(param === 'isNews'){
-                criteria[param] = queryParams[param] === 'true'
-            }else{
-                criteria[param] = queryParams[param]
-            }
+        let criteria = {}
+        if(name){
+            const regex = new RegExp(name, 'i');
+            criteria = { name: { $regex: regex } }
         }
+
+        // // construct criteria
+        // for(const param in queryParams){
+        //     if(param === 'isNews'){
+        //         criteria[param] = queryParams[param] === 'true'
+        //     }else{
+        //         criteria[param] = queryParams[param]
+        //     }
+        // }
         const fetchCryptoList = new FetchCryptoList(criteria)
         const fetchCryptoListHandler = new FetchCryptoListHandler()
         const cryptoList = await fetchCryptoListHandler.handle(fetchCryptoList)
