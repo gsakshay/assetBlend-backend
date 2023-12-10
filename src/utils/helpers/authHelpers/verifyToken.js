@@ -1,5 +1,6 @@
 const constants = require('../../constants')
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const customError = require('../../errors/customError');
 
 exports.verifyToken = async function(token){
     try{

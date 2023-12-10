@@ -15,11 +15,11 @@ const RequestPasswordResetHandler = require('../commandHandlers/requestPasswordR
 const ResetPassword = require('../commands/resetPassword');
 const ResetPasswordHandler = require('../commandHandlers/resetPasswordHandler');
 const { isNotAdminUser } = require('../../middlewares/isNotAdminUser');
-const { hashPassword } = require('../../utils/helpers/hash');
 
 
 router.post('/register', validateSignupPayload, isNotAdminUser, async (req,res,next)=>{
     try{
+        console.log("In routes handler register")
         const signupCommand = new SignupCommand(req.body);
         const signupCommandHandler = new SignupCommandHandler();
         let responseJson = undefined

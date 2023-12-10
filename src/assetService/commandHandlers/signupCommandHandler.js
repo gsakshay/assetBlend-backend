@@ -27,7 +27,6 @@ class SignupCommandHandler {
             }catch(error){
                 throw error
             }
-
             //return response
             const responseData = {
                 username: user.username,

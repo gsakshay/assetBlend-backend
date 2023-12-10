@@ -12,6 +12,7 @@ class DeleteUserAssetHandler{
         let assetData = null
         try{
             const assetId = command.assetId
+            const advisor  = command.advisor
             if(!assetId){
                 throw new customError("Asset Id must be provided"), 400, 'warn'
             }
@@ -23,7 +24,7 @@ class DeleteUserAssetHandler{
             assetData = await fetchAssetHandler.handle(fetchAsset)
             // set sold to true
             assetData.sold = true
-            const { user, ...assetUpdateData } = assetData;
+            //const { user, ...assetUpdateData } = assetData;
             //console.log("Asset data bfr udate",assetData)
             // update asset
             const updateAssetCommand = new UpdateAssetCommand(assetData)
@@ -37,11 +38,25 @@ class DeleteUserAssetHandler{
                 const updateUserCommand = new UpdateUserCommand(assetData.user)
                 const updateUserHandler = new UpdateUserHandler()
                 await updateUserHandler.handle(updateUserCommand)
-                return assetData
+                
             }catch(err){
                 throw new customError("Failed to update user", 500, 'error')
             }
-            
+
+            // update advisor if exists
+
+            // udpate advisor if exists
+            if(advisor !== null){
+                try{
+                    advisor.totalInvestedAmount = advisor.totalInvestedAmount -  (assetData.quantity * assetData.amountOnPurchase)
+                    const updateAdvisorCommand = new UpdateUserCommand(advisor)
+                    const updateAdvisorHandler = new UpdateUserHandler()
+                    await updateAdvisorHandler.handle(updateAdvisorCommand)
+                }catch(e){
+                    throw new customError("Failed to udpate advisor data", 500, 'error')
+                }
+            }
+            return assetData
         }catch(error){
             if(error.message === "Failed to update user"){
                 // revert the asset 

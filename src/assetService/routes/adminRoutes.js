@@ -25,7 +25,6 @@ router.post('/news',verifyUser, isAdminUser, async (req,res,next)=> {
         }
         res.status(200).json({updateStatus:updateStatus, message: message})
     }catch(error){
-        console.log(error)
         if(error instanceof customError){
             next(error)
         }else{

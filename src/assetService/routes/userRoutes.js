@@ -10,6 +10,11 @@ const DeleteUserAsset = require('../commands/deleteUserAsset');
 const DeleteUserAssetHandler = require('../commandHandlers/deleteUserAssetHandler');
 const FetchAssetList = require('../queries/assets/fetchAssetList');
 const FetchAssetListHandler = require('../queryHandlers/assets/fetchAssetListHandler');
+const AddAdvisorCommand = require('../commands/addAdvisorCommand');
+const AddAdvisorHandler = require('../commandHandlers/AddAdvisorHandler');
+const DeleteAdvisor = require('../commands/deleteAdvisor');
+const DeleteAdvisorHandler = require('../commandHandlers/deleteAdvisorHandler');
+
 
 
 router.post('/assets', verifyUser, hasUserRole, 
@@ -38,13 +43,12 @@ async (req,res,next)=>{
         }
 
         const payload = req.body
-        console.log(payload)
         const { user, ...assetData } = req.body;
 
         const addUserAsset = new AddUserAsset(assetData, user)    
         const addUserAssetHandler = new AddUserAssetHandler()
         const responseData = await addUserAssetHandler.handle(addUserAsset)
-        res.status(201).json(responseData)
+        res.status(200).json(responseData)
     }catch(error){
         if(error.status === 400){
             next(error)
@@ -60,7 +64,6 @@ router.get('/assets', verifyUser, hasUserRole, async (req,res, next)=> {
     try{
 
         // handle params if needed later
-
         const fetchAssetList = new FetchAssetList({sold:false})
         const fetchAssetListHandler = new FetchAssetListHandler()
         const assetList = await fetchAssetListHandler.handle(fetchAssetList)
@@ -75,17 +78,40 @@ router.post('/assets/:assetId', verifyUser, hasUserRole, async (req, res, next)=
     try{
         // get asset id
         const {assetId} = req.params
-
-        const deleteUserAsset = new DeleteUserAsset(assetId)
+        const advisor = req.body.user.advisor
+        const deleteUserAsset = new DeleteUserAsset(assetId, advisor)
         const deleteUserAssetHandler = new DeleteUserAssetHandler()
         const updatedAsset = await deleteUserAssetHandler.handle(deleteUserAsset)
         res.status(200).json(updatedAsset)
     }catch(error){
-        console.log(error)
         next(new customError("Failed to delete asset", 500, 'error'))
     }    
 })
 
+router.post('/addAdvisor/:advisorId', verifyUser, hasUserRole, async (req, res, next)=> {
+    try{
+        const {advisorId} = req.params
+        const addAdvisor = new AddAdvisorCommand(req.body.user, advisorId)
+        const addAdvisorHandler = new AddAdvisorHandler()
+        const updatedUser = await addAdvisorHandler.handle(addAdvisor)
+        res.status(200).json(updatedUser)
+    }catch(error){
+        next(new customError("Failed to add advisor", 500, 'error'))
+    }
+})
+
+
+router.post('/removeAdvisor', verifyUser, hasUserRole, async (req,res,next)=> {
+    try{
+        const deleteAdvisorCommand = new DeleteAdvisor(req.body.user)
+        const deleteAdvisorHandler = new DeleteAdvisorHandler()
+        const advisorRemovedUser = await deleteAdvisorHandler.handle(deleteAdvisorCommand)
+        res.status(200).json(advisorRemovedUser)
+    }catch(error){
+        console.log(error)
+        next(new customError("Failed to delete advisor", 500, 'error'))
+    }
+})
 
 
 

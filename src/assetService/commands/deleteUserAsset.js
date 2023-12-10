@@ -1,6 +1,7 @@
 class DeleteUserAsset {
-    constructor(assetId){
+    constructor(assetId, advisor){
         this.assetId = assetId
+        this.advisor = advisor
     }
 }
 

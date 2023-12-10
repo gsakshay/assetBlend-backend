@@ -4,12 +4,8 @@ const DeleteAssetCommand = require('../commands/assets/deleteAssetCommand')
 const UpdateUserCommand = require('../commands/users/updateUserCommand')
 const AddCryptoPrepareData = require('../queries/addCryptoPreparedData')
 const AddStockPrepareData = require('../queries/addStockPrepareData')
-const FetchCrypto = require('../queries/crypto/fetchCrypto')
-const FetchStock = require('../queries/stocks/fetchStock')
 const AddStockPrepareDataHandler = require('../queryHandlers/addStockPrepareDataHandler')
 const AddCrptoPrepareDataHandler = require('../queryHandlers/addcryptoPrepareDataHandler')
-const FetchCryptoHandler = require('../queryHandlers/crypto/fetchCryptohandler')
-const FetchStockHandler = require('../queryHandlers/stocks/fetchStockHandler')
 const CreateAssetHandler = require('./assets/createAssetHandler')
 const DeleteAssetHandler = require('./assets/deleteAssetHandler')
 const UpdateUserHandler = require('./users/updateUserHandler')
@@ -77,15 +73,38 @@ class AddUserAssetHandler{
                 throw new customError("Failed to update user", 500, 'error')
             }
 
+            // udpate advisor if exists
+            if(asset.user.advisor !== null){
+                try{
+                    const advisor = asset.user.advisor
+                    advisor.totalInvestedAmount = advisor.totalInvestedAmount +  (asset.quantity * asset.amountOnPurchase)
+                    const updateAdvisorCommand = new UpdateUserCommand(advisor)
+                    const updateAdvisorHandler = new UpdateUserHandler()
+                    await updateAdvisorHandler.handle(updateAdvisorCommand)
+                }catch(e){
+                    throw new customError("Failed to udpate advisor data", 500, 'error')
+                }
+            }
+                        
             return asset
         }catch(error){
             if(error.message === "Failed to update user"){
                 // delete asset
-
                 const deleteAssetCommand = new DeleteAssetCommand(asset._id)
                 const deleteAssetHandler = new DeleteAssetHandler()
                 await deleteAssetHandler.handle(deleteAssetCommand)
+                throw new customError("Failed to insert asset", 500, 'error')
 
+            }else if(error.message === "Failed to udpate advisor data"){
+                // revert user and the remove asset
+                asset.user.totalInvestedAmount = asset.user.totalInvestedAmount -  (asset.quantity * asset.amountOnPurchase)
+                const updateUserCommand = new UpdateUserCommand(asset.user)
+                const updateUserHandler = new UpdateUserHandler()
+                await updateUserHandler.handle(updateUserCommand)
+                // delete asset
+                const deleteAssetCommand = new DeleteAssetCommand(asset._id)
+                const deleteAssetHandler = new DeleteAssetHandler()
+                await deleteAssetHandler.handle(deleteAssetCommand)
                 throw new customError("Failed to insert asset", 500, 'error')
             }else{
                 throw error

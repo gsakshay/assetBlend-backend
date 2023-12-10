@@ -31,7 +31,6 @@ class AddCrptoPrepareDataHandler{
 
             return cryptoData
         }catch(error){
-            console.log(error)
             if(error.status === 400){
                 throw error
             }else{

@@ -7,7 +7,6 @@ const customError = require('../../../utils/errors/customError')
 // get multiple users based on criteria or all
 async function getUsers(criteria={}){
     try{
-
         userList = await Users.find(criteria).populate('role');
         return userList
     } catch (error) {
@@ -22,7 +21,7 @@ async function getUser(criteria){
         if (!criteria || Object.keys(criteria).length === 0) {
             throw new customError('Atleast one criteria must be provided to fetch single entry.', 400, 'warn');
         }else{
-            const user = await Users.findOne(criteria).populate('role');
+            const user = await Users.findOne(criteria).populate('role').populate('advisor');
             return user;
         }
     }catch(error){
@@ -55,9 +54,6 @@ async function createUser(userPayload) {
 // update user
 async function updateUser(user) {
     try{
-        console.log("In DB", user)
-        console.log("In DB check value", user.totalInvestedAmount)
-
         // update similar if needed in other updates
         //const updateduser = await Users.findOneAndUpdate({username:user.username}, { $set: { totalInvestedAmount: user.totalInvestedAmount } }, { new: true })
         const nonUpdateableFields = ['createdAt', 'updatedAt', '__v', '_id'];
@@ -70,10 +66,7 @@ async function updateUser(user) {
             updatedUserObject[key] = user[key];
         }
         });
-
-        console.log("User removed fields", user)
         const updateduser = await Users.findOneAndUpdate({username:user.username}, {$set : updatedUserObject}, { new: true })
-        console.log("In DB after udpated",updateduser)
     }catch(error){
         console.log(error)
         throw new customError("Internal server error", 500, 'error')

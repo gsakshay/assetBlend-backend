@@ -17,8 +17,7 @@ async function createAsset(assetData) {
 // update asset
 async function updateAsset(asset) {
     try{
-        console.log("In updte asset",asset)
-        const nonUpdateableFields = ['createdAt', 'updatedAt', '__v', '_id'];
+        // const nonUpdateableFields = ['createdAt', 'updatedAt', '__v', '_id'];
 
         // // Remove non-updateable fields if they are present
         // const updatedAssetObject = {};
