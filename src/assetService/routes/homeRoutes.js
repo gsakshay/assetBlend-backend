@@ -5,6 +5,7 @@ const FetchHomeDataHandler = require('../queryHandlers/fetchHomeDataHandler');
 const GetAssetWorth = require('../queries/getAssetWorth');
 const GetAssetWorthHandler = require('../queryHandlers/getAssetWorthHandler');
 const router = express.Router();
+const { body, validationResult } = require('express-validator');
 
 router.get('/', async (req, res, next) => {
     try{

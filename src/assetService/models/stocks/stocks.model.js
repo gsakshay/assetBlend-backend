@@ -55,7 +55,7 @@ async function updateStock(stock){
 // update on value for set of tickers
 async function updateManyStockByTickers(tickers, fieldToUpdate, updateValue){
     try{
-        return await stocks.updateMany({ ticker: { $in: tickers } }, { $set: { [fieldToUpdate]: updateValue } });
+        return await stocks.updateMany({ _id: { $in: tickers } }, { $set: { [fieldToUpdate]: updateValue } });
     }catch(error){
         throw new customError(`Error updating stocks Tickers: ${error.message}`, 500, 'error')
     }
