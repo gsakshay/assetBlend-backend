@@ -21,14 +21,27 @@ class AddCrptoPrepareDataHandler{
                 endDate:assetPayload.datePurchased,
                 resampleFreq:"1day"
             }
-
-            const cryptoPrice = await CryptoController.getPriceOnDate(request_params)
-            if(cryptoPrice.length > 1){
-                throw new customError("Received multiple data", 500, 'error')
+            let cryptoPrice = null
+            try{
+                cryptoPrice = await CryptoController.getPriceOnDate(request_params)
+            }catch(e){
+                if(e.status === 400){
+                    console.log("Failed to fetch data for all tickers")
+                }else {
+                    throw err
+                }
             }
+            let amount = null
+            if(cryptoPrice && cryptoPrice.priceData && cryptoPrice.priceData.length > 0){
+                amount = cryptoPrice[0].priceData[0].close
+            }
+           
+            // if(cryptoPrice.length > 1){
+            //     throw new customError("Received multiple data", 500, 'error')
+            // }
             const cryptoData = {
                 "ticker": crypto.ticker,
-                "amount": cryptoPrice[0].priceData[0].close
+                "amount": amount
             }
 
             return cryptoData

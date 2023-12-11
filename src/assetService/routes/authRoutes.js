@@ -25,7 +25,7 @@ router.post('/register', validateSignupPayload, isNotAdminUser, async (req,res,n
         let responseJson = undefined
         responseJson = await signupCommandHandler.handle(signupCommand)
         res.cookie('jwt', responseJson.refreshToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 })
-        res.status(200).json({username: responseJson.username, accessToken: responseJson.accessToken})
+        res.status(200).json({username: responseJson.username, role:responseJson.role, accessToken: responseJson.accessToken})
     }catch(error){
         res.clearCookie('jwt', { httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 });
         if(error instanceof customError){
@@ -44,7 +44,7 @@ router.post('/login', async (req, res, next)=> {
         const loginHandler = new LoginHandler()
         const responseJson = await loginHandler.handle(loginCommand)
         res.cookie('jwt', responseJson.refreshToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 })
-        res.status(200).json({username: responseJson.username, accessToken: responseJson.accessToken})
+        res.status(200).json({username: responseJson.username, role:responseJson.role, accessToken: responseJson.accessToken})
     }catch(error){
         if(error instanceof customError){
             next(error)
@@ -61,7 +61,7 @@ router.post('/refreshToken', async(req, res, next)=> {
         const refreshHandler = new RefreshTokenHandler()
         const responseJson = await refreshHandler.handle(refreshTokenCommand)
         res.cookie('jwt', responseJson.refreshToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 })
-        res.status(200).json({username: responseJson.username, accessToken: responseJson.accessToken})
+        res.status(200).json({username: responseJson.username, role:responseJson.role, accessToken: responseJson.accessToken})
     }catch(error){
         console.log(error)
         if(error instanceof customError){

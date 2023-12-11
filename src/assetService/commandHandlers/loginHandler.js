@@ -34,6 +34,7 @@ class LoginCommandHandler {
             // return accessToken with username
             return {
                 username : userData.username,
+                role:userData.role.roleName,
                 accessToken : accessToken,
                 refreshToken: refreshToken
             }

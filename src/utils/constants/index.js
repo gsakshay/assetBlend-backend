@@ -11,12 +11,20 @@ require("dotenv").config({
 
 console.log("Loading constants...")
 
+const roles = {
+    CILENT:"CLIENT",
+    ADVISOR:"ADVISOR",
+    ADMIN:"ADMIN",
+    DEFAULT:"CLIENT"
+}
+
 const constants = {
     PORT: process.env.PORT,
     MONGO_URL: process.env.MONGO_URL,
     JWT_SECRET: process.env.JWT_SECRET,
     TIINGO_BASE_URL: process.env.TIINGO_BASE_URL,
     API_TOKEN: process.env.API_TOKEN,
+    ROLES:roles
 }
 
 module.exports = constants

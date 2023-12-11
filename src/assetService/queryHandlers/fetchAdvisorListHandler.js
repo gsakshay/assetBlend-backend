@@ -14,7 +14,7 @@ class FetchUserByRoleHandler {
             }
 
             // get roleId 
-            const fetchRole = new FetchRole({roleName: roleName})
+            const fetchRole = new FetchRole({roleName: roleName, approved:true})
             const fetchRoleHandler = new FetchRoleHandler()
             const roleData = await fetchRoleHandler.handle(fetchRole)
 

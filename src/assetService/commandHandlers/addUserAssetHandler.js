@@ -40,8 +40,15 @@ class AddUserAssetHandler{
             let tickerData = {}
             try{
                 tickerData = await addAssetPrepDataHandler.handle(addAssetPrepData)
+                console.log(tickerData)
+
+                // check empty data
+                if(tickerData.amount === null){
+                    throw new customError("No data found for asset. Failed to add asset", 400, 'warn')
+                }
             }catch(err){
                 if(err.status === 400){
+                    console.log("IN ADD USER HANDLER", err)
                     throw err
                 }else{
                     throw new customError("Invalid assetId", 400, 'warn')

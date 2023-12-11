@@ -6,6 +6,7 @@ const {validateEmail} = require('../utils/helpers/validateEmail')
 const {validatePassword} = require('../utils/helpers/validatePassword');
 const FetchRole = require('../assetService/queries/roles/fetchRole');
 const FetchRoleHandler = require('../assetService/queryHandlers/roles/fetchRoleHandler');
+const constants = require('../utils/constants/index')
 
 exports.validateSignupPayload = async function(req, res, next) {
     
@@ -54,7 +55,7 @@ exports.validateSignupPayload = async function(req, res, next) {
                 }                
             }else{
                 // set to user role
-                const fetchDefaultRole = new FetchRole({roleName:'USER'})
+                const fetchDefaultRole = new FetchRole({roleName:constants.ROLES.CILENT})
                 finalRole = await fetchRoleHandler.handle(fetchDefaultRole)
                 req.body.role = finalRole
                 

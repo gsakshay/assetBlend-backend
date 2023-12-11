@@ -30,6 +30,7 @@ class SignupCommandHandler {
             //return response
             const responseData = {
                 username: user.username,
+                role: user.role.roleName,
                 accessToken: accessToken,
                 refreshToken : refreshToken
             }

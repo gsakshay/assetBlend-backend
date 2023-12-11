@@ -8,9 +8,9 @@ getPriceOnDate = async function(requestParams, tickerName){
         const endpoint = raw_endpoint.replace("<ticker>",tickerName)
 
         const stock_data = await fetchTiingoData(endpoint, requestParams)
-        if(stock_data.length === 0){
-            throw new customError("Didnot receive data", 500, 'error')
-        }
+        // if(stock_data.length === 0){
+        //     throw new customError("Didnot receive data", 500, 'error')
+        // }
         return stock_data
     }catch(error){
         if(error.status === 400){
@@ -37,8 +37,6 @@ getDailyMetric = async function(requestParams, tickerName){
             console.log("In 400 ERROR DailyMetric")
             throw error
         }else{
-            console.log("Response",error)
-            console.log("Response",stockMetric)
             throw new customError("Failed to fetch metric for the given ticker", 500, 'error')
         }
         

@@ -12,7 +12,7 @@ class DeleteUserAssetHandler{
         let assetData = null
         try{
             const assetId = command.assetId
-            const advisor  = command.advisor
+            const advisor  = command.advisor // populate in get user and set from there
             if(!assetId){
                 throw new customError("Asset Id must be provided"), 400, 'warn'
             }
