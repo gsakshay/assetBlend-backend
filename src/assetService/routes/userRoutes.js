@@ -44,7 +44,6 @@ async (req,res,next)=>{
             throw new customError(errors.array()[0].msg, 400, 'warn')
         }
 
-        const payload = req.body
         const { user, ...assetData } = req.body;
 
         const addUserAsset = new AddUserAsset(assetData, user)    
