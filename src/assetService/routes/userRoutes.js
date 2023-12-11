@@ -21,12 +21,10 @@ const FetchUserDashboardHandler = require('../queryHandlers/fetchUserDashboardHa
 
 router.post('/assets', verifyUser, hasUserRole, 
 [   
-    // check not exist here only TODO
     body('quantity').isInt().withMessage('Quantity must be a whole number'),
     body('datePurchased')
     .custom((value) => {
       // Check if the date has the format "yyyy-mm-dd"
-      //const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
       if (!value.match(/^\d{4}-\d{2}-\d{2}$/)) {
         throw new Error('Date must be in the format YYYY-MM-DD');
       }
@@ -71,7 +69,7 @@ router.get('/assets', verifyUser, hasUserRole, async (req,res, next)=> {
         const assetList = await fetchAssetListHandler.handle(fetchAssetList)
         res.status(200).json(assetList)
     }catch(error){
-        next(new customError("Failed to fetch user stocks"))
+        next(new customError("Failed to fetch user stocks", 500, 'error'))
     }
 })
 

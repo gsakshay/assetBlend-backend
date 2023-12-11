@@ -6,6 +6,15 @@ const FetchHomeData = require("../queries/fetchHomeData")
 const FetchHomeDataHandler = require("../queryHandlers/fetchHomeDataHandler")
 const GetAssetWorth = require("../queries/getAssetWorth")
 const GetAssetWorthHandler = require("../queryHandlers/getAssetWorthHandler")
+const router = express.Router()
+const { body, validationResult } = require("express-validator")
+
+const express = require("express")
+const customError = require("../../utils/errors/customError")
+const FetchHomeData = require("../queries/fetchHomeData")
+const FetchHomeDataHandler = require("../queryHandlers/fetchHomeDataHandler")
+const GetAssetWorth = require("../queries/getAssetWorth")
+const GetAssetWorthHandler = require("../queryHandlers/getAssetWorthHandler")
 
 const { body } = require("express-validator")
 const router = express.Router()
@@ -44,6 +53,10 @@ router.post(
 	],
 	async (req, res, next) => {
 		try {
+			const errors = validationResult(req)
+			if (!errors.isEmpty()) {
+				throw new customError(errors.array()[0].msg, 400, "warn")
+			}
 			const type = req.query.type
 			const assetpayload = req.body
 			const getAssetWorth = new GetAssetWorth(type, assetpayload)

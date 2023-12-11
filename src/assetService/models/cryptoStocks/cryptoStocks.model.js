@@ -57,7 +57,7 @@ async function updateCrypto(crypto){
 // update a value for multiple tickers
 async function updateManyCryptoByTickers(tickers, fieldToUpdate, updateValue){
     try{
-        const result = await cryptoStocks.updateMany({ ticker: { $in: tickers } }, { $set: { [fieldToUpdate]: updateValue } });
+        const result = await cryptoStocks.updateMany({ _id: { $in: tickers } }, { $set: { [fieldToUpdate]: updateValue } });
         return result
     }catch(error){
         throw new customError(`Error updating crypto Tickers: ${error.message}`, 500, 'error')

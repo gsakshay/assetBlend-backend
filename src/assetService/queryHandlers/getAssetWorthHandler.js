@@ -69,12 +69,9 @@ class GetAssetWorthHandler{
                 finalPurchasePrice = purchasedPrice[0].close
                 finalLatestPrice = latestPrice[0].close
             }
-            // console.log(finalPurchasePrice)
-            // console.log()
             const profit_loss = await computeProfitLoss(assetPayload.quantity, finalPurchasePrice, finalLatestPrice) 
             return profit_loss
         }catch(error){
-            console.log(error)
             if(error.status === 400){
                 throw error
             }else{
