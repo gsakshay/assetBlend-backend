@@ -7,8 +7,10 @@ const cryptoRouter = require("./cryptoRoutes");
 const adminRouter = require("./adminRoutes");
 const userRouter = require("./userRoutes");
 const accountRouter = require("./accountRoutes");
-const advisorRoutes = require('./advisorRoutes')
-const tickerRoutes = require('./tickerRoutes')
+const advisorRouter = require('./advisorRoutes')
+const tickerRouter = require('./tickerRoutes')
+const homeRoutes = require('./homeRoutes')
+
 
 router.use("/auth", authRouter);
 
@@ -20,12 +22,14 @@ router.use("/crypto", cryptoRouter);
 
 router.use("/admin", adminRouter)
 
-router.use("/advisors", advisorRoutes)
+router.use("/advisors", advisorRouter)
 
 router.use("/user", userRouter);
 
 router.use("/account", accountRouter);
 
-router.use("/ticker", tickerRoutes)
+router.use("/ticker", tickerRouter)
+
+router.use("/guest", homeRoutes)
 
 module.exports = router;

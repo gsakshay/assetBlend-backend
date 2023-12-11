@@ -50,7 +50,7 @@ class GetTickerDataHandler {
                 }
 
                 const stockPrice = await StockController.getPriceOnDate(request_params, asset.ticker)
-                
+                // 
 
                 // fetch daily metric
                 const requestParamMetric = {
@@ -85,8 +85,12 @@ class GetTickerDataHandler {
                 }
                 const cryptoPrices = await CryptoController.getPriceOnDate(request_crypto_params)
                 // console.log(cryptoPrices[0].priceData)
+                let pricesForTicker = []
+                if(cryptoPrices && cryptoPrices.length > 0 && cryptoPrices[0].priceData){
+                    pricesForTicker = cryptoPrices[0].priceData
+                }
                 tickerData = {
-                    priceData:cryptoPrices[0].priceData,
+                    priceData:pricesForTicker,
                     asset:asset,
                     dailyMetric: null
                 }

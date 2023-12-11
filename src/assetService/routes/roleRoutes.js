@@ -5,6 +5,7 @@ const customError = require('../../utils/errors/customError');
 const FetchRole = require('../queries/roles/fetchRole');
 const FetchRoleHandler = require('../queryHandlers/roles/fetchRoleHandler');
 const router = express.Router();
+const constants = require('../../utils/constants/index')
 
 router.get("/", async (req, res, next)=> {
     try{
@@ -16,6 +17,20 @@ router.get("/", async (req, res, next)=> {
         next(new customError("Failed to fetch all roles", 500, 'error'))
     }
     
+})
+
+router.get('/permitted', async(req,res,next)=> {
+    try{
+        const nonPermittedRole = constants.ROLES.ADMIN
+        // fetchrole id of admin
+        const fetchRoles = new FetchRoleList({ roleName: { $ne: nonPermittedRole} })
+        const fetchRolesHandler = new FetchRoleListHandler()
+        const roleList = await fetchRolesHandler.handle(fetchRoles)
+        res.status(200).json(roleList)
+    }catch(err){
+        console.log(err)
+        next(new customError(" Failed to fetch permitted roles", 400, 'warn'))
+    }
 })
 
 router.get("/:roleID", async (req,res,next)=> {
@@ -34,5 +49,7 @@ router.get("/:roleID", async (req,res,next)=> {
         next(new customError("Failed to fetch given role", 500, 'error'))
     }
 })
+
+
 
 module.exports = router

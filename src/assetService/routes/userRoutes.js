@@ -80,7 +80,7 @@ router.post('/assets/:assetId', verifyUser, hasUserRole, async (req, res, next)=
     try{
         // get asset id
         const {assetId} = req.params
-        const advisor = req.body.user.advisor
+        const advisor = req.body.user.advisor // pass user to
         const deleteUserAsset = new DeleteUserAsset(assetId, advisor)
         const deleteUserAssetHandler = new DeleteUserAssetHandler()
         const updatedAsset = await deleteUserAssetHandler.handle(deleteUserAsset)

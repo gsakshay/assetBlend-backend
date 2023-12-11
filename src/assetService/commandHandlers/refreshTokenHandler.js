@@ -41,6 +41,7 @@ class RefreshTokenHandler{
             // return response
             return {
                 username : user.username,
+                role: user.role.roleName,
                 accessToken : accessToken,
                 refreshToken: refreshToken
             }
