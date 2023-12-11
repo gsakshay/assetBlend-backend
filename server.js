@@ -8,15 +8,11 @@ require("dotenv").config()
 // Importing the Express app
 const app = require("./src/app")
 
-// Importing necessary functions from models
-// TODO
 
 // Setting up environment variables
 const constants = require("./src/utils/constants")
 const loadDataController = require("./src/tingoServices/controllers/loadInitialDataController")
 const loadRoles = require("./src/utils/helpers/loadRoles")
-// const PORT = process.env.PORT
-// const MONGO_URL = process.env.MONGO_URL
 
 console.log(constants.PORT, constants.MONGO_URL)
 
@@ -26,7 +22,6 @@ const server = http.createServer(app)
 // Establishing MongoDB connection
 mongoose.connection.once("open", () => {
 	console.log("MongoDB connection successful")
-	// only in dev?
 	// populate data
 	console.log("Populating intial data...")
 	loadRoles().then(() => {
