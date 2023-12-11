@@ -19,7 +19,7 @@ const roles = {
 }
 
 dow_30_stocks = ["AXP", "AMGN", "AAPL", "BA", "CAT", "CSCO", "CVX", "GS", "HD", "HON", "IBM", "INTC", "JNJ", "KO", "JPM", "MCD", "MMM", "MRK", "MSFT", "NKE", "PG", "TRV", "UNH", "CRM", "VZ", "V", "WBA", "WMT", "DIS", "DOW"]
-preLoadedCrypto = ['lrceth', 'alcxbtc', 'ryodoge']
+preLoadedCrypto = ['lrceth','bananausdt', 'balbtc', 'baleth', 'baleur', 'bntbtc', 'bnteth', 'snteth','btcusd','kavabtc']
 const constants = {
     PORT: process.env.PORT,
     MONGO_URL: process.env.MONGO_URL,

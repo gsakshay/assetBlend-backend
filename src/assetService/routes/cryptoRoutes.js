@@ -18,14 +18,6 @@ router.get("/", async (req, res, next)=> {
             criteria = { name: { $regex: regex } }
         }
 
-        // // construct criteria
-        // for(const param in queryParams){
-        //     if(param === 'isNews'){
-        //         criteria[param] = queryParams[param] === 'true'
-        //     }else{
-        //         criteria[param] = queryParams[param]
-        //     }
-        // }
         const fetchCryptoList = new FetchCryptoList(criteria)
         const fetchCryptoListHandler = new FetchCryptoListHandler()
         const cryptoList = await fetchCryptoListHandler.handle(fetchCryptoList)

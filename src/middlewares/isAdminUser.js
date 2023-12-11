@@ -10,7 +10,6 @@ exports.isAdminUser = async function (req,res,next) {
         }
         next()
     } catch (error) {
-        console.log(error)
         next(new customError("Failed to check if user is Admin", 500, 'error'))
     }
 

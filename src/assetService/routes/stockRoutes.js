@@ -17,14 +17,7 @@ router.get("/", async (req, res, next)=> {
             criteria = { name: { $regex: regex } }
         }
         
-        
-        // for(const param in queryParams){
-        //     if(param === 'isNews' || param === 'isActive' || param === 'isADR'){
-        //         criteria[param] = queryParams[param] === 'true'
-        //     }else{
-        //         criteria[param] = queryParams[param]
-        //     }
-        // }
+
         const fetchStockList = new FetchStockList(criteria)
         const fetchStockListHandler = new FetchStockListHandler()
         const stockList = await fetchStockListHandler.handle(fetchStockList)
