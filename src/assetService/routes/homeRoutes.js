@@ -21,7 +21,6 @@ router.get('/', async (req, res, next) => {
 })
 
 router.post('/evaluate', 
-
 [   
     // check not exist here only TODO
     body('quantity').isInt().withMessage('Quantity must be a whole number'),
@@ -41,6 +40,10 @@ router.post('/evaluate',
 ],
 async (req,res,next)=> {
     try{
+        const errors = validationResult(req);
+        if(!errors.isEmpty()){
+            throw new customError(errors.array()[0].msg, 400, 'warn')
+        }
         const type = req.query.type
         const assetpayload = req.body
         const getAssetWorth = new GetAssetWorth(type, assetpayload)
