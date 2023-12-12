@@ -1,11 +1,4 @@
-const express = require('express');
-const customError = require('../../utils/errors/customError');
-const FetchHomeData = require('../queries/fetchHomeData');
-const FetchHomeDataHandler = require('../queryHandlers/fetchHomeDataHandler');
-const GetAssetWorth = require('../queries/getAssetWorth');
-const GetAssetWorthHandler = require('../queryHandlers/getAssetWorthHandler');
-const router = express.Router();
-const { body, validationResult } = require('express-validator');
+/** @format */
 
 router.get('/', async (req, res, next) => {
     try{
