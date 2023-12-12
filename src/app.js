@@ -8,7 +8,7 @@ const cookieParser = require('cookie-parser')
 const baseApiRouter = require("./assetService/routes/index")
 const customError = require("./utils/errors/customError")
 const {errorHandler} = require('./middlewares/errorHandler')
-const { hashPassword } = require("./utils/helpers/hash")
+
 
 // Importing defined routes
 // TODO

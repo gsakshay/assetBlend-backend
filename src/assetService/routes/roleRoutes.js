@@ -28,7 +28,6 @@ router.get('/permitted', async(req,res,next)=> {
         const roleList = await fetchRolesHandler.handle(fetchRoles)
         res.status(200).json(roleList)
     }catch(err){
-        console.log(err)
         next(new customError(" Failed to fetch permitted roles", 400, 'warn'))
     }
 })

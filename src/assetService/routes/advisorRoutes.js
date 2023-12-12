@@ -16,10 +16,11 @@ const FetchUserHandler = require("../queryHandlers/users/fetchUserHandler");
 const AddUserAsset = require("../commands/addUserAsset");
 const AddUserAssetHandler = require("../commandHandlers/addUserAssetHandler");
 const { body, validationResult } = require('express-validator');
+const constants = require('../../utils/constants/index')
 
 router.get("/", verifyUser, async (req, res, next) => {
   try {
-    const fetchAdvisors = new FetchUserByRole("ADVISOR");
+    const fetchAdvisors = new FetchUserByRole(constants.ROLES.ADVISOR);
     const fetchAdvisorsHandler = new FetchUserByRoleHandler();
     const advisorList = await fetchAdvisorsHandler.handle(fetchAdvisors);
     res.status(200).json(advisorList);
@@ -45,8 +46,10 @@ router.get("/dashboard", verifyUser, async (req, res, next) => {
       const assetsList = await fetchAssetListHandler.handle(query);
 
       for (let j = 0; j < assetsList.length; j++) {
-        const { quantity } = assetsList[j];
-        assetsCount += quantity;
+        if(!assetsList[j].sold){
+            const { quantity } = assetsList[j];
+            assetsCount += quantity;
+        }
       }
     }
 

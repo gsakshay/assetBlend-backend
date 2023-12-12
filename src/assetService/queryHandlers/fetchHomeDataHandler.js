@@ -38,7 +38,6 @@ class FetchHomeDataHandler {
                 // console.log(tickerData)
                 return tickerData
             }))
-            console.log(allAssetsData)
             return allAssetsData
         }catch(error){
             console.log(error)

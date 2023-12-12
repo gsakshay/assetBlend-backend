@@ -19,7 +19,6 @@ const { isNotAdminUser } = require('../../middlewares/isNotAdminUser');
 
 router.post('/register', validateSignupPayload, isNotAdminUser, async (req,res,next)=>{
     try{
-        console.log("In routes handler register")
         const signupCommand = new SignupCommand(req.body);
         const signupCommandHandler = new SignupCommandHandler();
         let responseJson = undefined
@@ -46,6 +45,7 @@ router.post('/login', async (req, res, next)=> {
         res.cookie('jwt', responseJson.refreshToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 })
         res.status(200).json({username: responseJson.username, role:responseJson.role, accessToken: responseJson.accessToken})
     }catch(error){
+        console.log(error)
         if(error instanceof customError){
             next(error)
         }else{

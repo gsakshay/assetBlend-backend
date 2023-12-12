@@ -21,7 +21,8 @@ class FetchUserDashboardHandler {
             const userAssets = await fetchAssetListHandler.handle(fetchUserAssets)
 
             // add asset count
-            dashboardData.no_of_assets = userAssets.length
+            dashboardData.no_of_assets = userAssets.filter(item => item.sold === false)
+                                                .reduce((sum, item) => sum + item.quantity, 0);
 
             if(userAssets.length > 0){
                 // get 5

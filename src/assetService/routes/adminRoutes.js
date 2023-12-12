@@ -20,6 +20,7 @@ const UpdateUserCommand = require("../commands/users/updateUserCommand");
 const UpdateUserHandler = require('../commandHandlers/users/updateUserHandler');
 const DeleteUserCommand = require('../commands/users/deleteUserCommand');
 const DeleteUserHandler = require('../commandHandlers/users/deleteUserHandler');
+const constants = require('../../utils/constants/index')
 
 router.post("/news", verifyUser, isAdminUser, async (req, res, next) => {
   try {
@@ -95,7 +96,7 @@ router.get('/dashboard', verifyUser, isAdminUser, async (req, res, next) => {
 router.get('/requests', verifyUser, isAdminUser, async (req, res, next) => {
     try {
         //Fetch role id for advisor
-        const advisorRole = new FetchRole({roleName: "ADVISOR"});
+        const advisorRole = new FetchRole({roleName: constants.ROLES.ADVISOR});
         const fetchRoleHandler = new FetchRoleHandler();
         const advisorRoleEntry = await fetchRoleHandler.handle(advisorRole);
 
@@ -145,7 +146,6 @@ router.post('/approve/:userId', verifyUser, isAdminUser, async (req, res, next) 
 router.delete('/reject/:userId', verifyUser, isAdminUser, async (req, res, next) => {
     try {
         const { userId } = req.params;
-        console.log(userId);
         const deleteUser =  new DeleteUserCommand({ _id : userId });
         const deleteUserHandler = new DeleteUserHandler();
         const result = await deleteUserHandler.handle(deleteUser);

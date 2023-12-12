@@ -38,7 +38,6 @@ class LogoutHandler {
             return { status: 200}
 
         }catch(error){
-            console.log(error)
             throw error
         }
             

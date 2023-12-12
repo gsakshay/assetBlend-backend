@@ -108,7 +108,6 @@ router.post('/removeAdvisor', verifyUser, hasUserRole, async (req,res,next)=> {
         const advisorRemovedUser = await deleteAdvisorHandler.handle(deleteAdvisorCommand)
         res.status(200).json(advisorRemovedUser)
     }catch(error){
-        console.log(error)
         next(new customError("Failed to delete advisor", 500, 'error'))
     }
 })
