@@ -49,8 +49,8 @@ router.get("/dashboard", verifyUser, async (req, res, next) => {
 
 			for (let j = 0; j < assetsList.length; j++) {
 				if (!assetsList[j].sold) {
-					const { quantity } = assetsList[j]
-					assetsCount += quantity
+					// const { quantity } = assetsList[j]
+					assetsCount += 1
 				}
 			}
 		}
