@@ -1,6 +1,6 @@
 const FetchCrypto = require("../queries/crypto/fetchCrypto")
 const FetchStock = require("../queries/stocks/fetchStock")
-const FetchCryptoHandler = require("./crypto/fetchCryptohandler")
+const FetchCryptoHandler = require("./crypto/fetchCryptoHandler")
 const FetchStockHandler = require("./stocks/fetchStockHandler")
 const StockController = require('../../tingoServices/controllers/queryStockDataController')
 const CryptoController = require('../../tingoServices/controllers/queryCryptoDataController')
