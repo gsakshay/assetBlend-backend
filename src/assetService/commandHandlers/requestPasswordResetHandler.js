@@ -37,7 +37,6 @@ class RequestPasswordResetHandler {
                 resetToken : user.resetToken
             }
         }catch(error){
-            console.log(error)
             throw error
         }
         

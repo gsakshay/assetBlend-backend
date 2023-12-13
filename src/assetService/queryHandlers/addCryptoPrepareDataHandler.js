@@ -6,6 +6,7 @@ const FetchCryptoHandler = require("./crypto/fetchCryptohandler")
 class AddCrptoPrepareDataHandler{
     async handle(query){
         try{
+            
             const assetPayload = query.assetPayload
 
 
@@ -32,13 +33,12 @@ class AddCrptoPrepareDataHandler{
                 }
             }
             let amount = null
-            if(cryptoPrice && cryptoPrice.priceData && cryptoPrice.priceData.length > 0){
+
+            // add check for price
+            if(cryptoPrice && cryptoPrice.length > 0){
                 amount = cryptoPrice[0].priceData[0].close
             }
            
-            // if(cryptoPrice.length > 1){
-            //     throw new customError("Received multiple data", 500, 'error')
-            // }
             const cryptoData = {
                 "ticker": crypto.ticker,
                 "amount": amount

@@ -10,6 +10,7 @@ async function getUsers(criteria={}){
         userList = await Users.find(criteria).populate('role');
         return userList
     } catch (error) {
+        console.log(error)
     throw new customError(`Error fetching user: ${error.message}`, 500, 'error');
   }
 }

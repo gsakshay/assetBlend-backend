@@ -8,7 +8,6 @@ require("dotenv").config()
 // Importing the Express app
 const app = require("./src/app")
 
-
 // Setting up environment variables
 const constants = require("./src/utils/constants")
 const loadDataController = require("./src/tingoServices/controllers/loadInitialDataController")
@@ -24,22 +23,24 @@ mongoose.connection.once("open", () => {
 	console.log("MongoDB connection successful")
 	// populate data
 	console.log("Populating intial data...")
-	loadRoles().then(() => {
-		console.log("loaded roles");
-	}).catch((error)=>{
-		console.log(error.message)
-	});
-	loadDataController.loadAssets().then(() => {
-		console.log("loaded stocks");
-	}).catch((error)=>{
-		console.log(error.message)
-	});
+	loadRoles()
+		.then(() => {
+			console.log("loaded roles")
+		})
+		.catch((error) => {
+			console.log(error.message)
+		})
+	// loadDataController.loadAssets().then(() => {
+	// 	console.log("loaded stocks");
+	// }).catch((error)=>{
+	// 	console.log(error.message)
+	// });
 
-	loadDataController.loadCrypto().then(() => {
-		console.log("loaded crypto data");
-	}).catch((error)=>{
-		console.log(error.message)
-	});
+	// loadDataController.loadCrypto().then(() => {
+	// 	console.log("loaded crypto data");
+	// }).catch((error)=>{
+	// 	console.log(error.message)
+	// });
 })
 mongoose.connection.on("error", (err) => console.error(err))
 

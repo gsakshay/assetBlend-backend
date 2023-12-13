@@ -14,22 +14,19 @@ class FetchUserByRoleHandler {
             }
 
             // get roleId 
-            const fetchRole = new FetchRole({roleName: roleName, approved:true})
+            const fetchRole = new FetchRole({roleName: roleName})
             const fetchRoleHandler = new FetchRoleHandler()
             const roleData = await fetchRoleHandler.handle(fetchRole)
 
-            console.log(roleData)
             let userListByRole =[]
-            const fetchUserList = new FetchUserList({role: roleData._id})
+            const fetchUserList = new FetchUserList({role: roleData._id, approved:true})
             const fetchUserListHandler = new FetchUserListHandler()
             userListByRole = await fetchUserListHandler.handle(fetchUserList)
 
-            console.log(userListByRole)
             return userListByRole
 
             
         }catch(error){
-            console.log(error)
             throw error
         }
         

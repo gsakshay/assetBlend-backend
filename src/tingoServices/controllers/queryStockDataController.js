@@ -27,6 +27,7 @@ getDailyMetric = async function(requestParams, tickerName){
         const endpoint = raw_endpoint.replace("<ticker>",tickerName)
 
         const stockMetric = await fetchTiingoData(endpoint, requestParams)
+        // needed
         if(stockMetric.length === 0 || stockMetric.length > 1){
             throw new customError("Didnot receive data", 400, 'error')
         }
