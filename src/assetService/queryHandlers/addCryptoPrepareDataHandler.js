@@ -1,7 +1,7 @@
 const customError = require("../../utils/errors/customError")
 const CryptoController = require("../../tingoServices/controllers/queryCryptoDataController")
 const FetchCrypto = require("../queries/crypto/fetchCrypto")
-const FetchCryptoHandler = require("./crypto/fetchCryptohandler")
+const FetchCryptoHandler = require("./crypto/fetchCryptoHandler")
 
 class AddCrptoPrepareDataHandler{
     async handle(query){
